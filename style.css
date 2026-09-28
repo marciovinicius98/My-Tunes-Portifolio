@@ -290,7 +290,8 @@ main {
 }
 
 .artist-card,
-.album-card {
+.album-card,
+.music-card {
     background-color: var(--bg-card);
     padding: 16px;
     border-radius: 8px;
@@ -312,17 +313,20 @@ main {
 }
 
 .artist-card:hover,
-.album-card:hover {
+.album-card:hover,
+.music-card:hover {
     background-color: var(--purple-mid);
 }
 
 .artist-card img,
-.album-card img {
+.album-card img,
+.music-card img {
     transition: transform 0.3s ease;
 }
 
 .artist-card:hover img,
-.album-card:hover img {
+.album-card:hover img,
+.music-card:hover img {
     transform: scale(1.05);
 }
 
@@ -342,19 +346,54 @@ main {
     margin-bottom: 16px;
 }
 
+.music-card img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 1px;
+    margin-bottom: 16px;
+}
+
+.music-card {
+    width: 180px;
+    min-width: 180px;
+    flex-shrink: 0;
+}
+
 .artist-card h3,
-.album-card h3 {
+.album-card h3,
+.music-card h3 {
     font-size: 12px;
 }
 
 .artist-card p,
-.album-card p {
+.album-card p,
+.music-card p {
     font-size: 10px;
     color: #b7b8b6;
 }
 
 .content {
     margin-top: 40px;
+}
+
+/* MUSICAS */
+
+.musics-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.musics-grid {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    width: 100%;
 }
 
 /* BANNER */

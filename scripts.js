@@ -29,8 +29,24 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'Trouble', artist: 'Akon', image: './img/akon-trouble.jpg' }
     ];
 
+    const musicsData = [
+        { name: 'Beautiful', artist: 'Akon', image: './img/musicas/beautiful-akon.jpg' },
+        { name: 'Breakdown', artist: 'Seether', image: './img/musicas/breakdown-seether.jpg' },
+        { name: 'Não Deixe o Samba Morrer', artist: 'Alcione', image: './img/musicas/nao-deixa-o-samba-morrer-alcione.jpg' },
+        { name: 'High Hopes', artist: 'Panic At the Disco', image: './img/musicas/high-hopes-panic-at-the-disco.jpg' },
+        { name: 'Carry on Wayward Son', artist: 'Kansas', image: './img/musicas/carry-on-wayward-son-kansas.jpg' },
+        { name: 'Confident', artist: 'Demi Lovato', image: './img/musicas/confident-demi-lovato.jpg' },
+        { name: 'Empire State of Mind (feat. Alicia Keys)', artist: 'Jay-z', image: './img/musicas/empire-state-of-mind-jay-z.jpg' },
+        { name: 'Feeling Good', artist: 'Michael Bublé', image: './img/musicas/feeling-good-michael-buble.jpg' },
+        { name: 'Tremendo Vacilão', artist: 'Perlla', image: './img/musicas/tremendo-vacilao-perlla.jpg' },
+        { name: 'I ran (So Far Away)', artist: 'A Flock of Seagulls', image: './img/musicas/i-ran-a-flock-of-seagulls.jpg' },
+        { name: 'Nem um Dia', artist: 'Djavan', image: './img/musicas/nem-um-dia-djavan.jpg' },
+        { name: 'Talk Dirty', artist: 'Jason Derulo', image: './img/musicas/talk-dirty-jason-derulo.jpg' }
+    ];
+
     const artistGrid = document.querySelector('.artists-grid');
     const albumsGrid = document.querySelector('.albums-grid');
+    const musicsGrid = document.querySelector('.musics-grid');
 
     artistData.forEach((artist, index) => {
         const artistCard = document.createElement('div');
@@ -64,10 +80,27 @@ document.addEventListener('DOMContentLoaded', () => {
         albumsGrid.appendChild(albumCard);
     });
 
+    musicsData.forEach((music, index) => {
+        const musicCard = document.createElement('div');
+        musicCard.classList.add('music-card');
+        musicCard.style.animationDelay = `${index * 0.06}s`;
+
+        musicCard.innerHTML = `
+            <img src="${music.image}" alt="imagem do ${music.name}">
+            <div>
+                <h3>${music.name}</h3>
+                <p>${music.artist}</p>
+            </div>
+        `;
+
+        
+        musicsGrid.appendChild(musicCard);
+    });
+
     // Função única de slider, usada pros dois grids (evita duplicar/errar código)
     function setupSlider(grid, prevBtn, nextBtn) {
         const scrollAmount = () => {
-            const card = grid.querySelector('.artist-card, .album-card');
+            const card = grid.querySelector('.artist-card, .album-card, .music-card');
             if (!card) return 300;
             const gap = parseInt(getComputedStyle(grid).gap) || 10;
             return card.offsetWidth + gap;
@@ -108,4 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.prev-albums'),
         document.querySelector('.next-albums')
     );
+
+       // musicas (agora com os seletores certos: .prev-musics / .next-musics)
+    setupSlider(
+        musicsGrid,
+        document.querySelector('.prev-musics'),
+        document.querySelector('.next-musics')
+    );
+
 });
