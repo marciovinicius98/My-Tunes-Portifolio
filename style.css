@@ -87,6 +87,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    flex-shrink: 0;
 }
 
 .nav-logo {
@@ -179,10 +180,12 @@ body {
 }
 
 main {
-    padding: 24px;
+    min-width: 0;
+    padding-bottom: 110px;
     flex-grow: 1;
     overflow-y: auto;
     background: linear-gradient(160deg, #000000 0%, var(--purple-mid) 100%);
+
 }
 
 .search-bar {
@@ -220,7 +223,7 @@ main {
     gap: 10px;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     scrollbar-width: none;
     width: 100%;
 }
@@ -262,7 +265,7 @@ main {
     gap: 10px;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     scrollbar-width: none;
     width: 100%;
 }
@@ -290,8 +293,7 @@ main {
 }
 
 .artist-card,
-.album-card,
-.music-card {
+.album-card {
     background-color: var(--bg-card);
     padding: 16px;
     border-radius: 8px;
@@ -331,11 +333,11 @@ main {
 }
 
 .artist-card img {
-    width: 100%;
+    width: 105%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 50%;
-    margin-bottom: 16px;
+    margin: -8px auto 16px;
 }
 
 .album-card img {
@@ -347,28 +349,66 @@ main {
 }
 
 .music-card img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
+    display: block;
+    width: 56px;
+    height: 56px;
+
     object-fit: cover;
-    border-radius: 1px;
-    margin-bottom: 16px;
+    border-radius: 6px;
+    margin: 0;
 }
 
+.music-card > div {
+    min-width: 0;
+}
+
+.music-card h3 {
+    font-size: 13px;
+    line-height: 1.4;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.music-card p {
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--text-muted);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+
 .music-card {
-    width: 180px;
-    min-width: 180px;
-    flex-shrink: 0;
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 36px;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 0;
+    padding: 12px;
+    border-radius: 10px;
+
+    background-color: var(--bg-card);
+    text-align: left;
+
+    scroll-snap-align: start;
+    transition: background-color 0.3s;
 }
 
 .artist-card h3,
-.album-card h3,
-.music-card h3 {
+.album-card h3 {
     font-size: 12px;
 }
 
 .artist-card p,
-.album-card p,
-.music-card p {
+.album-card p {
     font-size: 10px;
     color: #b7b8b6;
 }
@@ -387,13 +427,24 @@ main {
 }
 
 .musics-grid {
-    display: flex;
-    gap: 10px;
+    display: grid;
+
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    grid-auto-columns: 320px;
+
+    gap: 10px 16px;
+
+    width: 100%;
+    min-width: 0;
+
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
+
+    scroll-behavior: auto;
+    scroll-snap-type: none;
     scrollbar-width: none;
-    width: 100%;
+    
 }
 
 /* BANNER */
@@ -407,6 +458,7 @@ main {
     justify-content: space-between;
     align-items: center;
     padding: 8px 14px;
+    z-index: 20;
 }
 
 .banner h2 {
@@ -430,4 +482,385 @@ main {
 
 .banner button:hover {
     background-color: #f3e0e0;
+}
+
+/* BOTÃO DE PLAY DOS CARDS */
+
+.artist-card,
+.album-card,
+.music-card {
+    position: relative;
+}
+
+.play-button {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: var(--accent);
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    opacity: 0;
+    transform: translateY(5px);
+
+    transition: opacity 0.25s ease, transform 0.25s ease,
+                background-color 0.25s ease;
+}
+
+/* Artistas e álbuns: aparece somente ao passar o mouse */
+
+.artist-card:hover .play-button,
+.album-card:hover .play-button {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Músicas: fica sempre visível */
+
+.music-card .play-button {
+    position: static;
+    opacity: 1;
+    transform: none;
+}
+
+.music-card .play-button:hover {
+    transform: scale(1.08);
+}
+
+/* Efeito ao passar o mouse no botão */
+
+.play-button:hover {
+    background-color: var(--accent-hover);
+    transform: scale(1.08);
+}
+
+/* NOVIDADES */
+
+.news-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.news-grid {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+    scrollbar-width: none;
+}
+
+.news-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.news-card {
+    /* Em telas maiores, mostra dois cards e parte do próximo. */
+    flex: 0 0 440px;
+    max-width: 90%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+
+    border: 1px solid rgba(197, 108, 240, 0.2);
+    border-radius: 16px;
+
+    background: linear-gradient(135deg, #30203e, #181818);
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+
+    scroll-snap-align: start;
+    transition: background-color 0.25s, border-color 0.25s;
+}
+
+.news-card:hover {
+    background: linear-gradient(135deg, #4a2a6d, #242424);
+    border-color: var(--accent);
+}
+
+.news-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -4px;
+}
+
+.news-cover {
+    width: 130px;
+    height: 130px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.news-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+}
+
+.news-label {
+    color: var(--accent-hover);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.news-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.news-artist {
+    color: #ddd;
+    font-size: 13px;
+}
+
+.news-description {
+    color: #b7b3b6;
+    font-size: 12px;
+    line-height: 1.5;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 8px 12px;
+
+    border-radius: 20px;
+    background-color: var(--accent);
+    color: #161019;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.news-card:hover .news-action {
+    background-color: var(--accent-hover);
+}
+
+/* JANELA DE DETALHES */
+
+.news-dialog {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+
+    width: min(440px, 90vw);
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 24px;
+
+    background-color: var(--bg-panel);
+    color: #fff;
+    border: 1px solid var(--purple-mid);
+    border-radius: 18px;
+}
+
+.news-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.news-dialog-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.news-close {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background-color: #282828;
+    color: #fff;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.news-close:hover {
+    background-color: var(--purple-mid);
+}
+
+.news-dialog-image {
+    display: block;
+    width: 180px;
+    max-width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.news-dialog h2 {
+    margin-top: 8px;
+}
+
+.news-dialog-artist {
+    color: var(--accent-hover);
+    margin-top: 6px;
+}
+
+.news-dialog-description {
+    color: #ccc;
+    line-height: 1.6;
+    margin-top: 16px;
+}
+
+/* CARDS MAIS COMPACTOS EM TELAS MENORES */
+
+@media (max-width: 700px) {
+    .news-card {
+        flex-basis: 320px;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+        gap: 14px;
+    }
+
+    .news-cover {
+        width: 100px;
+        height: 100px;
+    }
+
+    .news-title {
+        font-size: 18px;
+    }
+
+    .news-container .slider-button {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        margin: 0 5px;
+    }
+}
+
+/* Aumenta os cards de novidades */
+.news-card {
+    flex-basis: 580px;
+    min-height: 240px;
+    padding: 24px;
+    gap: 24px;
+}
+
+.news-cover {
+    width: 180px;
+    height: 180px;
+}
+
+.news-title {
+    font-size: 26px;
+}
+
+.news-artist {
+    font-size: 15px;
+}
+
+.news-description {
+    font-size: 14px;
+}
+
+.news-action {
+    padding: 10px 16px;
+    font-size: 14px;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 700px) {
+    .news-card {
+        flex-basis: 340px;
+        min-height: auto;
+        padding: 18px;
+        gap: 16px;
+    }
+
+    .news-cover {
+        width: 140px;
+        height: 140px;
+    }
+
+    .news-title {
+        font-size: 22px;
+    }
+}
+
+/* Prepara os elementos para receber a borda roxa */
+.artist-card,
+.album-card,
+.music-card,
+.news-card,
+button,
+.top-nav a,
+.nav-footer a,
+.nav-library {
+    outline: 1px solid transparent;
+    outline-offset: -1px;
+}
+
+/* Mostra a borda quando o mouse passa por cima */
+.artist-card:hover,
+.album-card:hover,
+.music-card:hover,
+.news-card:hover,
+button:hover,
+.top-nav a:hover,
+.nav-footer a:hover,
+.nav-library:hover {
+    outline-color: var(--accent);
+}
+
+/* Mostra a mesma borda ao navegar pelo teclado */
+.artist-card:focus-visible,
+.album-card:focus-visible,
+.music-card:focus-visible,
+.news-card:focus-visible,
+button:focus-visible,
+.top-nav a:focus-visible,
+.nav-footer a:focus-visible,
+.nav-library:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+/* Links do menu superior, exceto o botão Entrar */
+.top-nav a:not(.login) {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+}
+
+/* Links do rodapé da barra lateral */
+.nav-footer a {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 12px;
 }

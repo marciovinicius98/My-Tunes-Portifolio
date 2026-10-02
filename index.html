@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    
+
     <div class="container">
         <nav class="sidebar">
             <div class="nav-logo">
@@ -66,6 +66,49 @@
 
             <section class="content">
                 <div class="section-title">
+                    <h2>Novidades para Você</h2>
+                </div>
+                <div class="news-container">
+                    <button type="button" class="slider-button prev-news" aria-label="Novidades Anteriores">
+                        &lt;
+                    </button>
+
+                    <div class="news-grid"></div>
+
+                    <button type="button" class="slider-button next-news" aria-label="Próximas Novidades">
+                        &gt;
+                    </button>
+
+                </div>
+
+                <!-- JANELA QUE APARECE AO CLICAR EM UMA NOVIDADE-->
+
+                <dialog class="news-dialog" aria-labelledby="neus-dialog-title">
+                    <form method="dialog" class="news-dialog-header">
+                        <button type="submit" class="news-close" aria-label="Fechar Detalhes">
+                            &times;
+                        </button>
+
+                    </form>
+
+                    <img src="" alt="" class="news-dialog-image">
+                    <span class="news-label">Em Destaque</span>
+                    <h2 id="news-dialog-title"></h2>
+                    <p class="news-dialog-artists"></p>
+                    <p class="news-dialog-description"></p>
+
+                </dialog>
+
+                <div class="section-title">
+                    <h2>Músicas do Momento</h2>
+                </div>
+                <div class="musics-container">
+                    <button class="slider-button prev-musics">&lt;</button>
+                    <div class="musics-grid"></div>
+                    <button class="slider-button next-musics">&gt;</button>
+                </div>
+
+                <div class="section-title">
                     <h2>Artistas Populares</h2>
                 </div>
                 <div class="artists-container">
@@ -83,15 +126,8 @@
                     <button class="slider-button next-albums">&gt;</button>
                 </div>
 
-                <div class="section-title">
-                    <h2>Músicas do Momento</h2>
-                </div>
-                <div class="musics-container">
-                    <button class="slider-button prev-musics">&lt;</button>
-                    <div class="musics-grid"></div>
-                    <button class="slider-button next-musics">&gt;</button>
-                </div>
-                
+        
+
             </section>
         </main>
     </div>
