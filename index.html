@@ -83,7 +83,7 @@
 
                 <!-- JANELA QUE APARECE AO CLICAR EM UMA NOVIDADE-->
 
-                <dialog class="news-dialog" aria-labelledby="neus-dialog-title">
+                <dialog class="news-dialog" aria-labelledby="news-dialog-title">
                     <form method="dialog" class="news-dialog-header">
                         <button type="submit" class="news-close" aria-label="Fechar Detalhes">
                             &times;
@@ -94,7 +94,7 @@
                     <img src="" alt="" class="news-dialog-image">
                     <span class="news-label">Em Destaque</span>
                     <h2 id="news-dialog-title"></h2>
-                    <p class="news-dialog-artists"></p>
+                    <p class="news-dialog-artist"></p>
                     <p class="news-dialog-description"></p>
 
                 </dialog>
@@ -126,9 +126,124 @@
                     <button class="slider-button next-albums">&gt;</button>
                 </div>
 
-        
+                <section class="extra-content" aria-labelledby="playlists-title">
+                    <div class="section-title">
+                        <h2 id="playlists-title">Uma seleção para cada momento</h2>
+
+                        <p class="section-description">Explore as faixas e guarde suas seleções favoritas.</p>
+                    </div>
+
+                    <div class="playlist-filters" role="group" aria-label="Filtrar seleções">
+                        <button type="button" data-playlist-filter="todas" aria-pressed="true">
+                            Todas
+                        </button>
+
+                        <button type="button" data-playlist-filter="energia" aria-pressed="false">
+                            Energia
+                        </button>
+
+                        <button type="button" data-playlist-filter="brasil" aria-pressed="false">
+                            Brasil
+                        </button>
+
+                        <button type="button" data-playlist-filter="noite" aria-pressed="false">
+                            Noite
+                        </button>
+
+                        <button type="button" data-playlist-filter="Salvas" aria-pressed="false">
+                            Salvas (0)
+                        </button>
+                    </div>
+
+                    <p id="playlist-feedback" class="feedback-description" role="status"></p>
+
+                    <div class="playlist-grid">
+
+                        <article class="playlist-card playlist-energy" data-playlist-id="energia">
+
+                            <div class="playlist-cover">
+                                <span aria-hidden="true">01</span>
+                                <img src="./img/musicas/high-hopes-panic-at-the-disco.jpg" alt="" loading="lazy">
+                            </div>
+
+                            <span class="playlist-tag">Para ganhar Energia</span>
+                            <h3>Aumenta o volume</h3>
+                            <p>Uma seleção da casa para dar outro ritmo ao seu dia.</p>
+
+                            <details>
+                                <summary>Explorar 3 faixas</summary>
+                                <ul>
+                                    <li>High Hopes - Panic! At The Disco</li>
+                                    <li>Carry on Wayward Son - Kansas</li>
+                                    <li>Confident - Demi Lovato</li>
+                                </ul>
+                            </details>
+
+                            <button type="button" class="save-playlist" aria-pressed="false">
+                                ♡ Salvar seleção
+                            </button>
+                        </article>
+
+                        <article class="playlist-card playlist-brasil" data-playlist-id="brasil">
+
+                            <div class="playlist-cover">
+                                <span aria-hidden="true">02</span>
+                                <img src="./img/musicas/nem-um-dia-djavan.jpg" alt="" loading="lazy">
+                            </div>
+
+                            <span class="playlist-tag">Vozes brasileiras</span>
+                            <h3>Sons daqui</h3>
+                            <p>Três vozes diferentes para explorar no seu tempo.</p>
+
+                            <details>
+                                <summary>Explorar 3 faixas</summary>
+                                <ul>
+                                    <li>Não Deixe o Samba Morrer - Alcione</li>
+                                    <li>Tremendo Vacilão - Perlla</li>
+                                    <li>Nem um Dia - Djavan</li>
+                                </ul>
+                            </details>
+
+                            <button type="button" class="save-playlist" aria-pressed="false">
+                                ♡ Salvar seleção
+                            </button>
+                        </article>
+
+                        <article class="playlist-card playlist-night" data-playlist-id="noite">
+                            <div class="playlist-cover">
+                                <span aria-hidden="true">03</span>
+                                <img src="./img/musicas/feeling-good-michael-buble.jpg" alt="" loading="lazy">
+                            </div>
+
+                            <span class="playlist-tag">Outro cenário</span>
+                            <h3>Quando a cidade acende</h3>
+                            <p>Uma proposta de escuta para acompanhar a noite.</p>
+
+                            <details>
+                                <summary>Explorar 3 faixas</summary>
+                                <ul>
+                                    <li>Beautiful - Akon</li>
+                                    <li>Empire State of Mind - Jay-Z</li>
+                                    <li>Feeling Good - Michael Bublé</li>
+                                </ul>
+                            </details>
+
+                            <button type="button" class="save-playlist" aria-pressed="false">
+                                ♡ Salvar seleção
+                            </button>
+                        </article>
+                    </div>
+
+                    <p class="section-description">Estas seleções apresentam faixas do catálogo.
+                                                    A reprodução de áudio não está disponível nesta pré-visualização.
+                    </p>
+
+                    <p id="save-feedback" class="section-description" role="status"></p>
+                </section>
+
 
             </section>
+
         </main>
     </div>
 

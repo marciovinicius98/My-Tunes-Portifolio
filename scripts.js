@@ -107,11 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     // CRIA OS CARDS DAS NOVIDADES
-    newsData.forEach((news) => {
+    newsData.forEach((news, index) => {
         const newsCard = document.createElement('button');
 
         newsCard.type = 'button';
         newsCard.classList.add('news-card');
+        newsCard.style.animationDelay = `${index * 0.06}s`;
 
         newsCard.setAttribute('aria-haspopup', 'dialog');
         newsCard.setAttribute(
@@ -214,7 +215,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const musicCard = document.createElement('div');
 
         musicCard.classList.add('music-card');
-        musicCard.style.animationDelay = `${index * 0.06}s`;
+        musicCard.style.animationDelay =
+            `${Math.floor(index / 2) * 0.06}s`;
 
         musicCard.innerHTML = `
             <img
@@ -250,98 +252,110 @@ document.addEventListener('DOMContentLoaded', () => {
 
             return card.offsetWidth + gap;
         };
+        requestAnimationFrame(() => {
+            const animations = Array.from(grid.children).flatMap(card =>
+                card.getAnimations().filter(animation =>
+                    animation.animationName === 'cardFadeIn'
+                )
+            );
 
+            Promise.allSettled(
+                animations.map(animation => animation.finished)
+            ).then(() => {
+                grid.parentElement.classList.add('controls-ready');
+            });
+        });
         // Guarda a animação atual e o destino da rolagem.
 
-// Guarda a animação atual e o destino da rolagem.
-let animationId = null;
-let targetScroll = grid.scrollLeft;
+        // Guarda a animação atual e o destino da rolagem.
+        let animationId = null;
+        let targetScroll = grid.scrollLeft;
 
-const animateScroll = (direction) => {
-    const startScroll = grid.scrollLeft;
-    const maxScroll = Math.max(
-        0,
-        grid.scrollWidth - grid.clientWidth
-    );
+        const animateScroll = (direction) => {
+            const startScroll = grid.scrollLeft;
+            const maxScroll = Math.max(
+                0,
+                grid.scrollWidth - grid.clientWidth
+            );
 
-    // Se não há animação, parte da posição atual.
-    if (animationId === null) {
-        targetScroll = startScroll;
-    } else {
-        cancelAnimationFrame(animationId);
-    }
+            // Se não há animação, parte da posição atual.
+            if (animationId === null) {
+                targetScroll = startScroll;
+            } else {
+                cancelAnimationFrame(animationId);
+            }
 
-    // Avança ou volta uma coluna sem ultrapassar os limites.
-    targetScroll = Math.max(
-        0,
-        Math.min(
-            maxScroll,
-            targetScroll + scrollAmount() * direction
-        )
-    );
+            // Avança ou volta uma coluna sem ultrapassar os limites.
+            targetScroll = Math.max(
+                0,
+                Math.min(
+                    maxScroll,
+                    targetScroll + scrollAmount() * direction
+                )
+            );
 
-    const distance = targetScroll - startScroll;
+            const distance = targetScroll - startScroll;
 
-    // Respeita quem prefere menos animações no sistema.
-    const reduceMotion = window.matchMedia(
-        '(prefers-reduced-motion: reduce)'
-    ).matches;
+            // Respeita quem prefere menos animações no sistema.
+            const reduceMotion = window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches;
 
-    if (reduceMotion) {
-        grid.scrollLeft = targetScroll;
-        animationId = null;
-        updateButtons();
-        return;
-    }
+            if (reduceMotion) {
+                grid.scrollLeft = targetScroll;
+                animationId = null;
+                updateButtons();
+                return;
+            }
 
-    const duration = 350;
-    const startTime = performance.now();
+            const duration = 350;
+            const startTime = performance.now();
 
-    const step = (currentTime) => {
-        const progress = Math.min(
-            (currentTime - startTime) / duration,
-            1
-        );
+            const step = (currentTime) => {
+                const progress = Math.min(
+                    (currentTime - startTime) / duration,
+                    1
+                );
 
-        // Começa devagar, acelera e desacelera ao terminar.
-        const easing = progress < 0.5
-            ? 4 * progress ** 3
-            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                // Começa devagar, acelera e desacelera ao terminar.
+                const easing = progress < 0.5
+                    ? 4 * progress ** 3
+                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
-        grid.scrollLeft = startScroll + distance * easing;
+                grid.scrollLeft = startScroll + distance * easing;
 
-        if (progress < 1) {
+                if (progress < 1) {
+                    animationId = requestAnimationFrame(step);
+                } else {
+                    animationId = null;
+                    updateButtons();
+                }
+            };
+
             animationId = requestAnimationFrame(step);
-        } else {
-            animationId = null;
-            updateButtons();
-        }
-    };
+        };
 
-    animationId = requestAnimationFrame(step);
-};
+        // Interrompe a animação se a pessoa começar a rolar manualmente.
+        const stopAnimation = () => {
+            if (animationId !== null) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
 
-// Interrompe a animação se a pessoa começar a rolar manualmente.
-const stopAnimation = () => {
-    if (animationId !== null) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-    }
+            targetScroll = grid.scrollLeft;
+        };
 
-    targetScroll = grid.scrollLeft;
-};
+        grid.addEventListener('wheel', stopAnimation, { passive: true });
+        grid.addEventListener('touchstart', stopAnimation, { passive: true });
+        grid.addEventListener('pointerdown', stopAnimation);
 
-grid.addEventListener('wheel', stopAnimation, { passive: true });
-grid.addEventListener('touchstart', stopAnimation, { passive: true });
-grid.addEventListener('pointerdown', stopAnimation);
+        nextBtn.addEventListener('click', () => {
+            animateScroll(1);
+        });
 
-nextBtn.addEventListener('click', () => {
-    animateScroll(1);
-});
-
-prevBtn.addEventListener('click', () => {
-    animateScroll(-1);
-});
+        prevBtn.addEventListener('click', () => {
+            animateScroll(-1);
+        });
 
         const updateButtons = () => {
             prevBtn.disabled = grid.scrollLeft <= 1;
@@ -395,4 +409,65 @@ prevBtn.addEventListener('click', () => {
         document.querySelector('.next-news')
     );
 
+    const playlistCards = [
+        ...document.querySelectorAll('[data-playlist-id]')
+    ];
+
+    const playlistFilters = [
+        ...document.querySelectorAll('[data-playlist-filter]')
+    ];
+
+    let activePlaylistFilter = 'todas';
+
+    // 1. Função renomeada para evitar conflito
+    function filterPlaylists() {
+        let visible = 0;
+
+        playlistCards.forEach(card => {
+            const saved = card.querySelector('.save-playlist')
+                .getAttribute('aria-pressed') === 'true';
+
+            const show =
+                activePlaylistFilter === 'todas' ||
+                card.dataset.playlistId === activePlaylistFilter ||
+                (activePlaylistFilter === 'salvas' && saved);
+
+            card.hidden = !show;
+
+            if (show) visible++;
+        });
+
+        playlistFilters.forEach(button => {
+            // 2. Corrigido de string() para String()
+            button.setAttribute(
+                'aria-pressed',
+                String(button.dataset.playlistFilter === activePlaylistFilter)
+            );
+        });
+
+        // 3. Removido o erro de sintaxe do final ('';)
+        document.querySelector('#playlist-feedback').textContent =
+            visible
+                ? `${visible} ${visible === 1
+                    ? 'seleção disponível'
+                    : 'seleções disponíveis'
+                }.`
+                : 'Nenhuma seleção salva. Escolha Todas e salve uma para começar.';
+    }
+
+    playlistFilters.forEach(button => {
+        button.addEventListener('click', () => {
+            activePlaylistFilter = button.dataset.playlistFilter;
+            filterPlaylists(); // Chamando a função corrigida
+        });
+    });
+
+    document.querySelectorAll('.playlist-cover img').forEach(image => {
+        image.addEventListener('error', () => {
+            image.hidden = true;
+        });
+    });
+
+    // Chamada inicial
+    filterPlaylists();
 });
